@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsIn, IsObject, IsArray, IsUrl } from 'class-validator';
+import { IsOptional, IsString, IsIn, IsObject, IsArray } from 'class-validator';
 
 export class CreateProblemDto {
   @IsString()

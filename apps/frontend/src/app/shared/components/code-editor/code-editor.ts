@@ -103,7 +103,9 @@ export class CodeEditor implements OnInit, OnDestroy {
   ngOnDestroy() {
     try {
       this.editorInstance?.dispose();
-    } catch {}
+    } catch {
+      // ignore dispose errors on navigation
+    }
   }
 
   setLanguage(lang: string) {
@@ -120,7 +122,9 @@ export class CodeEditor implements OnInit, OnDestroy {
       } else {
         this.editorInstance?.setValue(next);
       }
-    } catch {}
+    } catch {
+      // Monaco may be unavailable offline — fallback textarea keeps working
+    }
   }
 
   onFallbackInput(v: string) {

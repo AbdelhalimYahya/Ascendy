@@ -1,4 +1,4 @@
-import { IsOptional, IsString, MaxLength, IsIn, IsBoolean, IsUrl } from 'class-validator';
+import { IsOptional, IsString, MaxLength, IsIn, IsBoolean } from 'class-validator';
 
 export class UpdateMeDto {
   @IsOptional()
