@@ -1,9 +1,9 @@
 @if (problem(); as p) {
   <div class="mx-auto max-w-7xl py-8">
     <a routerLink="/problems" class="text-sm text-mist hover:text-white">← All problems</a>
-    <div class="mt-3 grid gap-4 lg:grid-cols-2">
-      <div class="glass p-6">
-        <div class="flex items-center gap-2">
+    <div class="mt-3 grid gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <div class="glass h-fit p-6 lg:sticky lg:top-20">
+        <div class="flex flex-wrap items-center gap-2">
           <span class="pill">{{ p.difficulty }}</span>
           <span class="pill">{{ p.sourcePlatform }}</span>
           @for (t of p.tags; track t.tag.id) {
@@ -34,15 +34,7 @@
         </div>
       </div>
       <div class="space-y-4">
-        <div class="glass p-6">
-          <h3 class="font-display font-bold">Code editor (Phase 5)</h3>
-          <p class="text-sm text-mist">Monaco + Run/Submit + AI review lands in Phase 5. Starter code preview:</p>
-          <pre class="mt-3 max-h-64 overflow-auto rounded-xl bg-void/70 p-4 font-mono text-xs">{{ p.starterCode?.['python'] || p.starterCode?.['javascript'] || '// starter code coming soon' }}</pre>
-          <div class="mt-3 flex gap-2">
-            <button class="btn-primary !py-2 text-sm opacity-50" disabled>Run (soon)</button>
-            <button class="btn-ghost !py-2 text-sm opacity-50" disabled>Submit (soon)</button>
-          </div>
-        </div>
+        <app-code-editor [problemId]="p.id" [starterCode]="p.starterCode" />
         <div class="glass p-6">
           <h3 class="font-display font-bold">Community solutions (Phase 7)</h3>
           <p class="text-sm text-mist">Showcase feed per problem lands in Phase 7.</p>

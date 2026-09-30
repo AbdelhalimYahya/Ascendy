@@ -2,11 +2,12 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ProblemsApi, ProblemDetail } from '../../../core/services/problems-api.service';
 import { ProgressWidget } from '../../../shared/components/progress-widget/progress-widget';
+import { CodeEditor } from '../../../shared/components/code-editor/code-editor';
 
 @Component({
   selector: 'app-problem-detail',
   standalone: true,
-  imports: [RouterLink, ProgressWidget],
+  imports: [RouterLink, ProgressWidget, CodeEditor],
   templateUrl: './problem-detail.html',
 })
 export class ProblemDetailComponent implements OnInit {

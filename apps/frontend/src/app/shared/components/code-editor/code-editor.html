@@ -1,0 +1,80 @@
+<div class="overflow-hidden rounded-2xl border border-line bg-void/60">
+  <div class="flex flex-wrap items-center gap-2 border-b border-line p-3">
+    <select [ngModel]="language()" (ngModelChange)="setLanguage($event)"
+      class="rounded-lg border border-line bg-abyss px-3 py-1.5 text-sm">
+      <option value="python">Python</option>
+      <option value="javascript">JavaScript</option>
+      <option value="cpp">C++</option>
+      <option value="java">Java</option>
+    </select>
+    <span class="text-xs text-mist">Monaco • auto-layout • responsive</span>
+    <div class="ms-auto flex gap-2">
+      <button (click)="run()" [disabled]="running()" class="btn-ghost !py-1.5 text-sm disabled:opacity-50">
+        {{ running() ? 'Running…' : '▶ Run samples' }}
+      </button>
+      <button (click)="submit()" [disabled]="submitting()" class="btn-primary !py-1.5 text-sm disabled:opacity-50">
+        {{ submitting() ? 'Judging…' : '✓ Submit' }}
+      </button>
+    </div>
+  </div>
+
+  <div #editorHost class="h-[320px] w-full"></div>
+  <details class="border-t border-line">
+    <summary class="cursor-pointer p-3 text-sm text-mist">Fallback editor (if Monaco blocked)</summary>
+    <textarea [ngModel]="code()" (ngModelChange)="onFallbackInput($event)" rows="8"
+      class="w-full bg-abyss p-3 font-mono text-xs outline-none"></textarea>
+  </details>
+
+  @if (notice()) {
+    <p class="border-t border-line bg-amberglow/10 px-4 py-2 text-xs text-amberglow">{{ notice() }}</p>
+  }
+
+  @if (runResult(); as r) {
+    <div class="border-t border-line p-4">
+      <div class="text-sm font-bold">Run: {{ r.passed }}/{{ r.count }} samples passed</div>
+      <div class="mt-2 space-y-2">
+        @for (t of r.results; track t.testCaseId) {
+          <div class="rounded-xl border p-3 font-mono text-xs"
+            [class]="t.pass ? 'border-mint/30 bg-mint/5' : 'border-red-400/30 bg-red-500/5'">
+            <div class="flex gap-2 font-sans font-bold">
+              <span>{{ t.pass ? '✓ pass' : '✗ fail' }}</span>
+              <span class="text-mist">{{ t.runtimeMs }}ms</span>
+            </div>
+            <div class="mt-1 text-mist">expected: <pre class="text-slate-200">{{ t.expectedOutput }}</pre></div>
+            <div class="text-mist">got: <pre class="text-slate-200">{{ t.stdout || t.stderr }}</pre></div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (submitResult(); as s) {
+    <div class="border-t border-line p-4">
+      <div class="flex items-center gap-2">
+        <span class="pill"
+          [class]="s.verdict === 'Accepted' ? '!border-mint/40 !bg-mint/10 text-mint' : ''">{{ s.verdict }}</span>
+        <span class="text-xs text-mist">{{ s.submission.runtimeMs }}ms • {{ s.submission.memoryKb }}kb</span>
+        @if (s.verdict === 'Accepted') {
+          <button class="btn-ghost ms-auto !py-1 text-xs">AI Review my code (Phase 8)</button>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="border-t border-line p-4">
+    <div class="text-sm font-bold">History</div>
+    @if (!history().length) {
+      <p class="text-xs text-mist">No submissions yet.</p>
+    } @else {
+      <div class="mt-2 space-y-1 text-xs">
+        @for (h of history(); track h.id) {
+          <div class="flex gap-2 rounded-lg bg-white/5 px-3 py-1.5">
+            <span class="pill !py-0 !text-[11px]">{{ h.verdict || 'Pending' }}</span>
+            <span class="text-mist">{{ h.language }}</span>
+            <span class="ms-auto text-mist">{{ h.createdAt }}</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
