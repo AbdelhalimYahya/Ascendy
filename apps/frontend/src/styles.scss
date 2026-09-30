@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ascendy design tokens + stunning base */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #0b1026;
+  --bg-2: #0e1533;
+  --mint: #10d9a3;
+  --vio: #7c6cff;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-body bg-void text-slate-100 antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 10% -10%, rgba(124, 108, 255, 0.25), transparent 60%),
+    radial-gradient(1000px 500px at 90% 0%, rgba(16, 217, 163, 0.18), transparent 60%),
+    radial-gradient(800px 600px at 50% 120%, rgba(255, 176, 32, 0.08), transparent 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+body.light {
+  color-scheme: light;
+  @apply bg-slate-50 text-slate-900;
+  background-image:
+    radial-gradient(1000px 500px at 10% 0%, rgba(124, 108, 255, 0.15), transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, rgba(16, 217, 163, 0.15), transparent 60%);
+}
+
+/* RTL: use logical properties everywhere; mirror helpers */
+[dir='rtl'] .ltr-only {
+  display: none;
+}
+[dir='ltr'] .rtl-only {
+  display: none;
+}
+
+.glass {
+  @apply border border-line bg-white/[0.04] backdrop-blur-xl shadow-glass rounded-2xl;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold text-void bg-mint hover:bg-emerald-300 transition shadow-glow;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-semibold border border-line bg-white/5 hover:bg-white/10 transition;
+}
+
+.pill {
+  @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold border border-line bg-white/5;
+}
+
+.mesh-hero {
+  background:
+    radial-gradient(600px 300px at 20% 20%, rgba(124, 108, 255, 0.35), transparent 60%),
+    radial-gradient(500px 300px at 80% 20%, rgba(16, 217, 163, 0.3), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent);
+}
+
+.code-window {
+  @apply glass overflow-hidden;
+}
+
+.skeleton {
+  @apply animate-pulse bg-white/10 rounded;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 255, 0.25);
+  border-radius: 8px;
+}

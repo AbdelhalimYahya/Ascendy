@@ -1,0 +1,15 @@
+{
+  "app": "Ascendy",
+  "nav": {
+    "problems": "Problems",
+    "paths": "Paths",
+    "dashboard": "Dashboard",
+    "ai": "AI Coach",
+    "login": "Log in",
+    "register": "Start climbing"
+  },
+  "hero": {
+    "title": "Climb higher in problem solving.",
+    "subtitle": "One dashboard for every platform — with real paths, an in-browser editor, and an AI coach that teaches why."
+  }
+}
