@@ -1,0 +1,41 @@
+<div class="rounded-2xl border border-line bg-void/60 p-5">
+  <div class="flex items-center justify-between">
+    <h3 class="font-display font-bold">Community solutions 💬</h3>
+    <button (click)="showForm.set(!showForm())" class="btn-ghost !py-1.5 text-xs">
+      {{ showForm() ? 'Cancel' : '+ Share your approach' }}
+    </button>
+  </div>
+
+  @if (showForm()) {
+    <form [formGroup]="form" (ngSubmit)="share()" class="mt-4 space-y-2">
+      <input formControlName="title" placeholder="e.g. O(n) hashmap — why it works"
+        class="w-full rounded-xl border border-line bg-abyss px-3 py-2 text-sm outline-none focus:border-mint" />
+      <textarea formControlName="content" rows="3" placeholder="Explain your approach…"
+        class="w-full rounded-xl border border-line bg-abyss px-3 py-2 text-sm outline-none focus:border-mint"></textarea>
+      <textarea formControlName="codeSnippet" rows="3" placeholder="Optional code snippet…"
+        class="w-full rounded-xl bg-abyss p-3 font-mono text-xs"></textarea>
+      <button [disabled]="form.invalid" class="btn-primary !py-2 text-sm disabled:opacity-50">Publish showcase</button>
+    </form>
+  }
+
+  <div class="mt-4 space-y-2">
+    @if (!posts().length) {
+      <p class="text-sm text-mist">No showcases yet — share the first approach.</p>
+    }
+    @for (p of posts(); track p.id) {
+      <div class="rounded-xl border border-line bg-white/5 p-4">
+        <div class="flex items-center gap-2">
+          <button (click)="vote(p, 1)" class="pill hover:border-mint/50">▲</button>
+          <span class="font-bold">{{ p.score }}</span>
+          <button (click)="vote(p, -1)" class="pill hover:border-red-400/50">▼</button>
+          <span class="font-semibold">{{ p.title }}</span>
+        </div>
+        <p class="mt-1 text-sm text-mist">by {{ p.author.username }} • {{ p._count.comments }} comments</p>
+        <p class="mt-2 text-sm">{{ p.content }}</p>
+        @if (p.codeSnippet) {
+          <pre class="mt-2 max-h-40 overflow-auto rounded-lg bg-void/70 p-3 font-mono text-xs">{{ p.codeSnippet }}</pre>
+        }
+      </div>
+    }
+  </div>
+</div>

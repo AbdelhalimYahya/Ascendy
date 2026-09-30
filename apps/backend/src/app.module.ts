@@ -10,6 +10,7 @@ import { TagsModule } from './tags/tags.module';
 import { ProgressModule } from './progress/progress.module';
 import { CodeEditorModule } from './code-editor/code-editor.module';
 import { RoadmapsModule } from './roadmaps/roadmaps.module';
+import { SocialModule } from './social/social.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { RoadmapsModule } from './roadmaps/roadmaps.module';
     ProgressModule,
     CodeEditorModule,
     RoadmapsModule,
+    SocialModule,
   ],
   controllers: [AppController],
   providers: [AppService],
