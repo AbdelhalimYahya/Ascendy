@@ -35,6 +35,7 @@
       </div>
       <div class="space-y-4">
         <app-code-editor [problemId]="p.id" [starterCode]="p.starterCode" />
+        <app-similar-problems [problemId]="p.id" />
         <app-ask-ai [problemId]="p.id" />
         <app-community-feed [problemId]="p.id" />
         <div class="glass p-6">

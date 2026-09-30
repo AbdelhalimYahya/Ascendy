@@ -5,11 +5,12 @@ import { ProgressWidget } from '../../../shared/components/progress-widget/progr
 import { CodeEditor } from '../../../shared/components/code-editor/code-editor';
 import { CommunityFeed } from '../../../shared/components/community-feed/community-feed';
 import { AskAi } from '../../../shared/components/ask-ai/ask-ai';
+import { SimilarProblems } from '../../../shared/components/similar-problems/similar-problems';
 
 @Component({
   selector: 'app-problem-detail',
   standalone: true,
-  imports: [RouterLink, ProgressWidget, CodeEditor, CommunityFeed, AskAi],
+  imports: [RouterLink, ProgressWidget, CodeEditor, CommunityFeed, AskAi, SimilarProblems],
   templateUrl: './problem-detail.html',
 })
 export class ProblemDetailComponent implements OnInit {
