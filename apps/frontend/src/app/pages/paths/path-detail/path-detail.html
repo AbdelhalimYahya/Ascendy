@@ -1,0 +1,38 @@
+@if (path(); as p) {
+  <div class="mx-auto max-w-5xl py-8">
+    <span class="pill">{{ p.goalType }}</span>
+    <h1 class="mt-2 font-display text-3xl font-bold">{{ p.title }}</h1>
+    <p class="text-mist">{{ p.description }}</p>
+    <button (click)="follow()" class="btn-primary mt-4 !py-2 text-sm">Follow this path</button>
+    @if (msg()) { <p class="mt-2 text-sm text-mint">{{ msg() }}</p> }
+    <div class="mt-6 grid gap-4 md:grid-cols-[2fr_1fr]">
+      <div class="glass p-6">
+        <h3 class="font-display font-bold">Steps ({{ p.steps.length }})</h3>
+        <ol class="mt-3 space-y-2">
+          @for (s of p.steps; track s.id) {
+            <li class="flex gap-3 rounded-xl border border-line bg-white/5 p-3 text-sm">
+              <span class="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-vio/20 font-bold">{{ s.order + 1 }}</span>
+              <span>{{ s.title }} @if (s.problem) { <span class="text-mist">• {{ s.problem.title }}</span> }</span>
+            </li>
+          }
+          @if (!p.steps.length) {
+            <p class="text-sm text-mist">No steps yet — author can add via API.</p>
+          }
+        </ol>
+      </div>
+      <div class="glass h-fit p-6">
+        <h3 class="font-display font-bold">Who else is climbing 👥</h3>
+        @if (!followers().length) {
+          <p class="mt-2 text-sm text-mist">Be the first follower.</p>
+        }
+        @for (f of followers(); track f.user.username) {
+          <div class="mt-2 flex justify-between text-sm">
+            <span>{{ f.user.username }}</span><span class="text-mist">step {{ f.currentStep }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="mx-auto max-w-5xl py-8"><div class="glass skeleton h-48"></div></div>
+}

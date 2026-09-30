@@ -1,0 +1,19 @@
+<div class="mx-auto max-w-2xl py-8">
+  <div class="glass p-8">
+    <h1 class="font-display text-2xl font-bold">Create a path</h1>
+    <p class="text-sm text-mist">Interview, competitive, or custom — ordered steps + accountability.</p>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="mt-6 space-y-4">
+      <input formControlName="title" placeholder="e.g. DP from zero to hero"
+        class="w-full rounded-xl border border-line bg-void/60 px-4 py-3 outline-none focus:border-mint" />
+      <textarea formControlName="description" rows="3" placeholder="Who is this for? What will they achieve?"
+        class="w-full rounded-xl border border-line bg-void/60 px-4 py-3 outline-none focus:border-mint"></textarea>
+      <select formControlName="goalType" class="w-full rounded-xl border border-line bg-void/60 px-4 py-3 text-sm">
+        <option value="interview">Interview Prep</option>
+        <option value="competitive">Competitive</option>
+        <option value="custom">Custom</option>
+      </select>
+      @if (error()) { <p class="text-sm text-red-300">{{ error() }}</p> }
+      <button class="btn-primary w-full">Create path →</button>
+    </form>
+  </div>
+</div>
