@@ -3,6 +3,7 @@ import { PrismaService } from '../common/prisma.service';
 import { CreateProblemDto } from './dto/create-problem.dto';
 import { UpdateProblemDto } from './dto/update-problem.dto';
 import { QueryProblemsDto } from './dto/query-problems.dto';
+import { paginate } from '../common/pagination';
 
 function slugify(title: string) {
   const base =
@@ -66,7 +67,28 @@ export class ProblemsService {
         take: limit,
       }),
     ]);
-    return { total, page, limit, items };
+    return paginate(total, page, limit, items);
+  }
+
+  // Problems similar to ones I failed (Attempted but not Solved) — tag overlap
+  async failedSimilar(userId: string, limit = 10) {
+    const failed = await this.prisma.progressEntry.findMany({
+      where: { userId, status: 'Attempted' },
+      include: { problem: { include: { tags: true } } },
+      take: 20,
+    });
+    const tagIds = [...new Set(failed.flatMap((f) => f.problem?.tags.map((t) => t.tagId) ?? []))];
+    if (!tagIds.length) return [];
+    const failedIds = failed.map((f) => f.problemId);
+    const candidates = await this.prisma.problem.findMany({
+      where: { id: { notIn: failedIds }, tags: { some: { tagId: { in: tagIds } } } },
+      include: { tags: { include: { tag: true } } },
+      take: 30,
+    });
+    return candidates
+      .map((c) => ({ ...c, shared: c.tags.filter((t) => tagIds.includes(t.tagId)).length }))
+      .sort((a, b) => b.shared - a.shared)
+      .slice(0, limit);
   }
 
   async findBySlug(slug: string) {

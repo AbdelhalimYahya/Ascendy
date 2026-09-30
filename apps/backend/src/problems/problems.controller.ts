@@ -15,6 +15,7 @@ import { UpdateProblemDto } from './dto/update-problem.dto';
 import { QueryProblemsDto } from './dto/query-problems.dto';
 import { CreateTestCaseDto, CreateLinkDto } from './dto/testcase-link.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 
 @Controller('problems')
 export class ProblemsController {
@@ -29,6 +30,12 @@ export class ProblemsController {
   @Get()
   findAll(@Query() q: QueryProblemsDto) {
     return this.problems.findAll(q);
+  }
+
+  @Get('failed-similar/me')
+  @UseGuards(JwtAuthGuard)
+  failedSimilar(@CurrentUser() user: { id: string }) {
+    return this.problems.failedSimilar(user.id);
   }
 
   @Get(':slug')
