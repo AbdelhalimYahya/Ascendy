@@ -28,5 +28,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/profile/profile').then((m) => m.Profile),
   },
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings').then((m) => m.Settings),
+  },
   { path: '**', redirectTo: '' },
 ];
