@@ -15,8 +15,13 @@
       <div class="flex items-center gap-2">
         <button (click)="toggleTheme()" class="btn-ghost !px-3 !py-2 text-sm" [attr.aria-label]="'common.toggleTheme' | translate">◐</button>
         <app-lang-switcher />
-        <a routerLink="/auth/login" class="btn-ghost !py-2 text-sm hidden sm:inline-flex">{{ 'nav.login' | translate }}</a>
-        <a routerLink="/auth/register" class="btn-primary !py-2 text-sm">{{ 'nav.register' | translate }}</a>
+        @if (auth.isAuthenticated()) {
+          <a routerLink="/dashboard" class="btn-ghost !py-2 text-sm hidden sm:inline-flex">⛰ {{ auth.user()?.username }}</a>
+          <button (click)="logout()" class="btn-ghost !py-2 text-sm">Logout</button>
+        } @else {
+          <a routerLink="/auth/login" class="btn-ghost !py-2 text-sm hidden sm:inline-flex">{{ 'nav.login' | translate }}</a>
+          <a routerLink="/auth/register" class="btn-primary !py-2 text-sm">{{ 'nav.register' | translate }}</a>
+        }
       </div>
     </nav>
   </header>

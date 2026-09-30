@@ -1,0 +1,27 @@
+<div class="mx-auto max-w-md py-12">
+  <div class="glass p-8">
+    <h1 class="font-display text-2xl font-bold">Welcome back, climber</h1>
+    <p class="mt-1 text-sm text-mist">Your streak missed you.</p>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="mt-6 space-y-4">
+      <div>
+        <label class="text-sm text-mist">Email or username</label>
+        <input formControlName="identifier" placeholder="you@example.com"
+          class="mt-1 w-full rounded-xl border border-line bg-void/60 px-4 py-3 outline-none focus:border-mint" />
+      </div>
+      <div>
+        <label class="text-sm text-mist">Password</label>
+        <input formControlName="password" type="password" placeholder="••••••••"
+          class="mt-1 w-full rounded-xl border border-line bg-void/60 px-4 py-3 outline-none focus:border-mint" />
+      </div>
+      @if (error()) {
+        <p class="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm text-red-300">{{ error() }}</p>
+      }
+      <button [disabled]="form.invalid || loading()" class="btn-primary w-full disabled:opacity-50">
+        {{ loading() ? 'Checking…' : 'Log in →' }}
+      </button>
+    </form>
+    <p class="mt-4 text-center text-sm text-mist">
+      New here? <a routerLink="/auth/register" class="text-mint hover:underline">Create account</a>
+    </p>
+  </div>
+</div>
