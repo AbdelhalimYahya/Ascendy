@@ -4,11 +4,12 @@ import { ProblemsApi, ProblemDetail } from '../../../core/services/problems-api.
 import { ProgressWidget } from '../../../shared/components/progress-widget/progress-widget';
 import { CodeEditor } from '../../../shared/components/code-editor/code-editor';
 import { CommunityFeed } from '../../../shared/components/community-feed/community-feed';
+import { AskAi } from '../../../shared/components/ask-ai/ask-ai';
 
 @Component({
   selector: 'app-problem-detail',
   standalone: true,
-  imports: [RouterLink, ProgressWidget, CodeEditor, CommunityFeed],
+  imports: [RouterLink, ProgressWidget, CodeEditor, CommunityFeed, AskAi],
   templateUrl: './problem-detail.html',
 })
 export class ProblemDetailComponent implements OnInit {

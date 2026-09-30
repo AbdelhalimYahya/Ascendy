@@ -11,6 +11,7 @@ import { ProgressModule } from './progress/progress.module';
 import { CodeEditorModule } from './code-editor/code-editor.module';
 import { RoadmapsModule } from './roadmaps/roadmaps.module';
 import { SocialModule } from './social/social.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { SocialModule } from './social/social.module';
     CodeEditorModule,
     RoadmapsModule,
     SocialModule,
+    AiModule,
   ],
   controllers: [AppController],
   providers: [AppService],

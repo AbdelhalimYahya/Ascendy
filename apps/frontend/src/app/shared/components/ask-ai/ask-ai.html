@@ -1,0 +1,33 @@
+<div class="rounded-2xl border border-line bg-void/60 p-5">
+  <div class="flex flex-wrap items-center gap-2">
+    <h3 class="font-display font-bold">Ask AI 🧠</h3>
+    <div class="ms-auto flex gap-1 text-xs">
+      <button (click)="setMode('hint')" class="pill" [class]="!mode() ? '' : mode() === 'hint' ? '!border-mint/50 text-mint' : ''">Hint</button>
+      <button (click)="setMode('explain')" class="pill" [class]="mode() === 'explain' ? '!border-mint/50 text-mint' : ''">Explain</button>
+      <button (click)="setMode('full_solution')" class="pill" [class]="mode() === 'full_solution' ? '!border-mint/50 text-mint' : ''">Full</button>
+      <button (click)="setMode('code_review')" class="pill" [class]="mode() === 'code_review' ? '!border-mint/50 text-mint' : ''">Review</button>
+    </div>
+  </div>
+  <div class="mt-3 max-h-64 space-y-2 overflow-auto">
+    @if (!messages().length) {
+      <p class="text-sm text-mist">
+        @if (mode() === 'hint') { Get one small hint at a time — never the full spoiler. }
+        @else if (mode() === 'explain') { Plain-language why behind the technique. }
+        @else if (mode() === 'full_solution') { Full walkthrough only when you explicitly ask. }
+        @else { Paste Accepted code for style + efficiency review. }
+      </p>
+    }
+    @for (m of messages(); track $index) {
+      <div class="rounded-xl p-3 text-sm" [class]="m.role === 'user' ? 'bg-vio/15' : 'bg-mint/10'">
+        <div class="text-xs text-mist">{{ m.role }}</div>
+        <div class="whitespace-pre-wrap">{{ m.content }}</div>
+      </div>
+    }
+    @if (loading()) { <p class="text-sm text-mist">Thinking…</p> }
+  </div>
+  <form [formGroup]="form" (ngSubmit)="send()" class="mt-3 flex gap-2">
+    <input formControlName="message" placeholder="Ask about this problem…"
+      class="flex-1 rounded-xl border border-line bg-abyss px-3 py-2 text-sm outline-none focus:border-mint" />
+    <button [disabled]="form.invalid || loading()" class="btn-primary !py-2 text-sm disabled:opacity-50">Send</button>
+  </form>
+</div>
