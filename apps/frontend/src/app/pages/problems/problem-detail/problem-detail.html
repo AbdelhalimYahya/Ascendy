@@ -1,0 +1,58 @@
+@if (problem(); as p) {
+  <div class="mx-auto max-w-7xl py-8">
+    <a routerLink="/problems" class="text-sm text-mist hover:text-white">← All problems</a>
+    <div class="mt-3 grid gap-4 lg:grid-cols-2">
+      <div class="glass p-6">
+        <div class="flex items-center gap-2">
+          <span class="pill">{{ p.difficulty }}</span>
+          <span class="pill">{{ p.sourcePlatform }}</span>
+          @for (t of p.tags; track t.tag.id) {
+            <span class="pill">{{ t.tag.name }}</span>
+          }
+        </div>
+        <h1 class="mt-3 font-display text-2xl font-bold">{{ p.title }}</h1>
+        <div class="prose prose-invert mt-4 max-w-none text-sm leading-7 text-slate-200">
+          {{ p.statement || 'No statement yet.' }}
+        </div>
+        @if (p.sourceUrl) {
+          <a [href]="p.sourceUrl" target="_blank" class="btn-ghost mt-4 !py-2 text-sm">View original ↗</a>
+        }
+        <div class="mt-6">
+          <h3 class="font-display font-bold">Sample tests</h3>
+          @if (!p.testCases.length) {
+            <p class="text-sm text-mist">No samples yet.</p>
+          }
+          @for (t of p.testCases; track t.id) {
+            <div class="mt-2 grid gap-2 rounded-xl border border-line bg-void/60 p-3 font-mono text-xs md:grid-cols-2">
+              <div><div class="text-mist">input</div><pre class="whitespace-pre-wrap">{{ t.input }}</pre></div>
+              <div><div class="text-mist">expected</div><pre class="whitespace-pre-wrap">{{ t.expectedOutput }}</pre></div>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="space-y-4">
+        <div class="glass p-6">
+          <h3 class="font-display font-bold">Code editor (Phase 5)</h3>
+          <p class="text-sm text-mist">Monaco + Run/Submit + AI review lands in Phase 5. Starter code preview:</p>
+          <pre class="mt-3 max-h-64 overflow-auto rounded-xl bg-void/70 p-4 font-mono text-xs">{{ p.starterCode?.['python'] || p.starterCode?.['javascript'] || '// starter code coming soon' }}</pre>
+          <div class="mt-3 flex gap-2">
+            <button class="btn-primary !py-2 text-sm opacity-50" disabled>Run (soon)</button>
+            <button class="btn-ghost !py-2 text-sm opacity-50" disabled>Submit (soon)</button>
+          </div>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-display font-bold">Community solutions (Phase 7)</h3>
+          <p class="text-sm text-mist">Showcase feed per problem lands in Phase 7.</p>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-display font-bold">Ask AI (Phase 8)</h3>
+          <p class="text-sm text-mist">Hint / Explain / Code-review panel lands in Phase 8.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else if (error()) {
+  <div class="py-20 text-center text-mist">{{ error() }}</div>
+} @else {
+  <div class="mx-auto max-w-7xl py-8"><div class="glass skeleton h-64"></div></div>
+}

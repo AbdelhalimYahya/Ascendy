@@ -1,0 +1,40 @@
+<div class="mx-auto max-w-3xl py-8">
+  <div class="glass p-8">
+    <h1 class="font-display text-2xl font-bold">Add a problem</h1>
+    <p class="text-sm text-mist">Custom or mirror from another platform (link duplicates via API).</p>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="mt-6 space-y-4">
+      <input formControlName="title" placeholder="Two Sum"
+        class="w-full rounded-xl border border-line bg-void/60 px-4 py-3 outline-none focus:border-mint" />
+      <textarea formControlName="statement" rows="5" placeholder="Statement (markdown)…"
+        class="w-full rounded-xl border border-line bg-void/60 px-4 py-3 outline-none focus:border-mint"></textarea>
+      <div class="grid gap-3 md:grid-cols-3">
+        <select formControlName="difficulty" class="rounded-xl border border-line bg-void/60 px-3 py-3 text-sm">
+          <option>Easy</option><option>Medium</option><option>Hard</option>
+        </select>
+        <select formControlName="sourcePlatform" class="rounded-xl border border-line bg-void/60 px-3 py-3 text-sm">
+          <option>Custom</option><option>Codeforces</option><option>LeetCode</option><option>AtCoder</option><option>HackerRank</option>
+        </select>
+        <input formControlName="sourceUrl" placeholder="Source URL"
+          class="rounded-xl border border-line bg-void/60 px-4 py-3 text-sm outline-none focus:border-mint" />
+      </div>
+      <input formControlName="tags" placeholder="tags: array, hashmap (comma separated)"
+        class="w-full rounded-xl border border-line bg-void/60 px-4 py-3 text-sm outline-none focus:border-mint" />
+      <div class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="text-sm text-mist">Python starter</label>
+          <textarea formControlName="python" rows="5" class="mt-1 w-full rounded-xl bg-void/70 p-3 font-mono text-xs"></textarea>
+        </div>
+        <div>
+          <label class="text-sm text-mist">JavaScript starter</label>
+          <textarea formControlName="javascript" rows="5" class="mt-1 w-full rounded-xl bg-void/70 p-3 font-mono text-xs"></textarea>
+        </div>
+      </div>
+      @if (error()) {
+        <p class="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-2 text-sm text-red-300">{{ error() }}</p>
+      }
+      <button [disabled]="form.invalid || loading()" class="btn-primary w-full disabled:opacity-50">
+        {{ loading() ? 'Saving…' : 'Publish problem' }}
+      </button>
+    </form>
+  </div>
+</div>

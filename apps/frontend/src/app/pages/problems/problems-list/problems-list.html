@@ -1,0 +1,63 @@
+<div class="mx-auto max-w-7xl py-8">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <h1 class="font-display text-3xl font-bold">Problems</h1>
+      <p class="text-sm text-mist">{{ total() }} challenges • filter by tag, difficulty, platform</p>
+    </div>
+    <a routerLink="/problems/new" class="btn-primary !py-2 text-sm">+ Add problem</a>
+  </div>
+
+  <form [formGroup]="filters" (ngSubmit)="load()" class="glass mt-6 grid gap-3 p-4 md:grid-cols-5">
+    <input formControlName="search" placeholder="Search title…"
+      class="rounded-xl border border-line bg-void/60 px-4 py-2.5 text-sm outline-none focus:border-mint" />
+    <select formControlName="difficulty" class="rounded-xl border border-line bg-void/60 px-3 py-2.5 text-sm">
+      <option value="">All difficulties</option>
+      <option>Easy</option>
+      <option>Medium</option>
+      <option>Hard</option>
+    </select>
+    <select formControlName="tag" class="rounded-xl border border-line bg-void/60 px-3 py-2.5 text-sm">
+      <option value="">All tags</option>
+      @for (t of tags(); track t.id) {
+        <option [value]="t.name">{{ t.name }}</option>
+      }
+    </select>
+    <select formControlName="sourcePlatform" class="rounded-xl border border-line bg-void/60 px-3 py-2.5 text-sm">
+      <option value="">All platforms</option>
+      <option>Codeforces</option>
+      <option>LeetCode</option>
+      <option>AtCoder</option>
+      <option>HackerRank</option>
+      <option>Custom</option>
+    </select>
+    <button class="btn-primary !py-2.5 text-sm">Filter</button>
+  </form>
+
+  @if (loading()) {
+    <div class="mt-6 grid gap-3 md:grid-cols-2"><div class="glass skeleton h-28"></div><div class="glass skeleton h-28"></div></div>
+  } @else if (!items().length) {
+    <div class="glass mt-6 p-10 text-center">
+      <div class="text-3xl">🏔</div>
+      <h3 class="mt-2 font-display font-bold">No problems yet</h3>
+      <p class="text-sm text-mist">Be the first to add one — or seed from Codeforces / LeetCode.</p>
+      <a routerLink="/problems/new" class="btn-primary mt-4 !py-2 text-sm">Add the first problem</a>
+    </div>
+  } @else {
+    <div class="mt-6 grid gap-3 md:grid-cols-2">
+      @for (p of items(); track p.id) {
+        <a [routerLink]="['/problems', p.slug]" class="glass p-5 transition hover:border-mint/40">
+          <div class="flex items-center gap-2">
+            <span class="rounded-full border px-2.5 py-0.5 text-xs font-bold" [class]="difficultyColor(p.difficulty)">{{ p.difficulty }}</span>
+            <span class="text-xs text-mist">{{ p.sourcePlatform }}</span>
+          </div>
+          <h3 class="mt-2 font-display font-bold">{{ p.title }}</h3>
+          <div class="mt-2 flex flex-wrap gap-1.5">
+            @for (t of p.tags; track t.tag.id) {
+              <span class="pill !py-0.5 !text-[11px]">{{ t.tag.name }}</span>
+            }
+          </div>
+        </a>
+      }
+    </div>
+  }
+</div>
