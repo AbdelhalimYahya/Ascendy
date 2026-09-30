@@ -6,10 +6,21 @@
     "dashboard": "Dashboard",
     "ai": "AI Coach",
     "login": "Log in",
-    "register": "Start climbing"
+    "register": "Start climbing",
+    "browseProblems": "Browse problems",
+    "startFree": "Start free"
   },
   "hero": {
-    "title": "Climb higher in problem solving.",
+    "badge1": "Unified tracking",
+    "badge2": "Real Paths",
+    "badge3": "AI hints, not spoilers",
+    "badge4": "Arabic-first",
+    "title1": "Climb higher in",
+    "title2": "problem solving.",
     "subtitle": "One dashboard for every platform — with real paths, an in-browser editor, and an AI coach that teaches why."
+  },
+  "common": {
+    "mvp": "MVP",
+    "toggleTheme": "Toggle theme"
   }
 }

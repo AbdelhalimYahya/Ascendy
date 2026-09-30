@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ascendy design tokens + stunning base */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+/* Ascendy design tokens + stunning base (fonts loaded via index.html to avoid build-time inlining) */
 
 :root {
   --bg: #0b1026;
