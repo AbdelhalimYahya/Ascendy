@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ascendy
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # Judge0 CE — self-hosted execution (optional for local dev).
+  # Uncomment to run locally (needs ~1GB RAM). Otherwise use JUDGE0_URL RapidAPI quota.
+  # judge0:
+  #   image: judge0/judge0:1.13.0
+  #   restart: unless-stopped
+  #   ports:
+  #     - "2358:2358"
+  #   environment:
+  #     - REDIS_HOST=redis
+  #   depends_on:
+  #     - redis
+  #     - db
+  # redis:
+  #   image: redis:7-alpine
+  #   restart: unless-stopped
+
+volumes:
+  pgdata:
