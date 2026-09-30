@@ -7,6 +7,229 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Placeholder {
-  id String @id @default(uuid())
+model User {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  username        String   @unique
+  passwordHash    String
+  avatarUrl       String?
+  bio             String?
+  languagePref    String   @default("en")
+  competitiveMode Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  progressEntries ProgressEntry[]
+  submissions     Submission[]
+  posts           Post[]
+  comments        Comment[]
+  votes           Vote[]
+  roadmaps        Roadmap[]        @relation("RoadmapAuthor")
+  roadmapFollows  RoadmapFollow[]
+  aiConversations AIConversation[]
+  masteryScores   MasteryScore[]
+}
+
+model Problem {
+  id             String   @id @default(uuid())
+  title          String
+  slug           String   @unique
+  statement      String?
+  difficulty     String
+  starterCode    Json?
+  sourceUrl      String?
+  sourcePlatform String?
+  createdAt      DateTime @default(now())
+
+  tags            ProblemTag[]
+  testCases       TestCase[]
+  progressEntries ProgressEntry[]
+  submissions     Submission[]
+  posts           Post[]
+  roadmapSteps    RoadmapStep[]
+  linksFrom       ProblemLink[] @relation("LinkFrom")
+  linksTo         ProblemLink[] @relation("LinkTo")
+}
+
+model ProblemLink {
+  id            String  @id @default(uuid())
+  fromProblemId String
+  toProblemId   String
+  note          String?
+
+  fromProblem Problem @relation("LinkFrom", fields: [fromProblemId], references: [id], onDelete: Cascade)
+  toProblem   Problem @relation("LinkTo", fields: [toProblemId], references: [id], onDelete: Cascade)
+
+  @@unique([fromProblemId, toProblemId])
+}
+
+model TestCase {
+  id             String  @id @default(uuid())
+  problemId      String
+  input          String
+  expectedOutput String
+  isSample       Boolean @default(false)
+
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+}
+
+model Submission {
+  id        String   @id @default(uuid())
+  userId    String
+  problemId String
+  language  String
+  code      String
+  mode      String
+  verdict   String?
+  runtimeMs Int?
+  memoryKb  Int?
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([userId, problemId])
+}
+
+model Tag {
+  id       String @id @default(uuid())
+  name     String @unique
+  problems ProblemTag[]
+}
+
+model ProblemTag {
+  problemId String
+  tagId     String
+  problem   Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([problemId, tagId])
+}
+
+model ProgressEntry {
+  id           String   @id @default(uuid())
+  userId       String
+  problemId    String
+  status       String
+  timeSpentMin Int?
+  language     String?
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId])
+}
+
+model MasteryScore {
+  id        String   @id @default(uuid())
+  userId    String
+  tagId     String
+  score     Float    @default(0)
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, tagId])
+}
+
+model Roadmap {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  goalType    String?
+  authorId    String
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  author  User            @relation("RoadmapAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  steps   RoadmapStep[]
+  follows RoadmapFollow[]
+}
+
+model RoadmapStep {
+  id          String  @id @default(uuid())
+  roadmapId   String
+  problemId   String?
+  order       Int
+  title       String
+  description String?
+
+  roadmap Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  problem Problem? @relation(fields: [problemId], references: [id], onDelete: SetNull)
+}
+
+model RoadmapFollow {
+  id              String  @id @default(uuid())
+  userId          String
+  roadmapId       String
+  currentStep     Int     @default(0)
+  visibleToOthers Boolean @default(true)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roadmap Roadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roadmapId])
+}
+
+model Post {
+  id          String   @id @default(uuid())
+  problemId   String
+  authorId    String
+  title       String
+  content     String
+  codeSnippet String?
+  createdAt   DateTime @default(now())
+
+  problem  Problem   @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments Comment[]
+  votes    Vote[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  postId    String
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model Vote {
+  id     String @id @default(uuid())
+  postId String
+  userId String
+  value  Int
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+}
+
+model AIConversation {
+  id        String   @id @default(uuid())
+  userId    String
+  problemId String?
+  mode      String?
+  title     String?
+  createdAt DateTime @default(now())
+
+  user     User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages AIMessage[]
+}
+
+model AIMessage {
+  id             String   @id @default(uuid())
+  conversationId String
+  role           String
+  content        String
+  createdAt      DateTime @default(now())
+
+  conversation AIConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }
